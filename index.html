@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='UTF-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0'>
+<title>YT Toolkit - Free YouTube Tags, Thumbnail Extractor and Urdu Hindi Text to Speech</title>
+<meta name='description' content='Paste any YouTube link to see its real title, description, tags, hashtags and HD thumbnail. Free unlimited Urdu, Hindi and English text to speech with download.'>
+<meta name='robots' content='index, follow'>
+<meta name='theme-color' content='#060818'>
+<style>
+:root{--bg:#060818;--bg2:#0b1030;--card:rgba(20,25,64,.7);--red:#ff3b5c;--violet:#8b5cff;--cyan:#22d3ee;--amber:#ffb340;--text:#eef0ff;--muted:#9aa2d0}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Segoe UI',Roboto,Tahoma,Arial,sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;line-height:1.6}
+#bg{position:fixed;inset:0;width:100%;height:100%;z-index:-2}
+.aurora{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
+.aurora i{position:absolute;border-radius:50%;filter:blur(90px);opacity:.42;animation:drift 18s ease-in-out infinite alternate}
+.aurora i:nth-child(1){width:420px;height:420px;background:var(--violet);top:-90px;left:-90px}
+.aurora i:nth-child(2){width:380px;height:380px;background:var(--red);bottom:-110px;right:-70px;animation-delay:-6s}
+.aurora i:nth-child(3){width:300px;height:300px;background:var(--cyan);top:40%;left:55%;opacity:.22;animation-delay:-12s}
+@keyframes drift{to{transform:translate(70px,40px) scale(1.2)}}
+nav{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:12px 5%;background:rgba(6,8,24,.8);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);z-index:100;border-bottom:1px solid rgba(255,255,255,.07)}
+.logo{font-size:1.4rem;font-weight:800;display:flex;align-items:center;gap:8px}
+.logo .play{background:var(--red);width:34px;height:24px;border-radius:7px;display:inline-flex;align-items:center;justify-content:center;font-size:12px;box-shadow:0 0 18px var(--red)}
+.logo b{background:linear-gradient(90deg,var(--red),var(--amber));-webkit-background-clip:text;background-clip:text;color:transparent}
+nav ul{display:flex;gap:22px;list-style:none}
+nav a{color:var(--muted);text-decoration:none;font-weight:600}
+nav a:hover{color:#fff}
+.hero{min-height:100vh;display:grid;grid-template-columns:1.05fr .95fr;gap:30px;align-items:center;padding:110px 5% 60px;max-width:1250px;margin:0 auto}
+.badge{display:inline-block;padding:6px 16px;border:1px solid var(--cyan);border-radius:30px;color:var(--cyan);font-size:.85rem;margin-bottom:20px;background:rgba(34,211,238,.08)}
+.hero h1{font-size:clamp(2.1rem,5.2vw,4rem);line-height:1.12;font-weight:900}
+.hero h1 em{font-style:normal;background:linear-gradient(90deg,var(--red),var(--amber));-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{color:var(--muted);font-size:1.1rem;max-width:560px;margin:18px 0 28px}
+.searchbar{display:flex;width:100%;max-width:600px;background:var(--card);border:1px solid rgba(255,255,255,.15);border-radius:60px;padding:7px;box-shadow:0 20px 60px rgba(139,92,255,.3)}
+.searchbar:focus-within{border-color:var(--red);box-shadow:0 20px 60px rgba(255,59,92,.35)}
+.searchbar input{flex:1;background:transparent;border:none;outline:none;color:var(--text);padding:0 18px;font-size:1rem;min-width:0}
+.btn{background:linear-gradient(135deg,var(--red),#ff6f87);color:#fff;border:none;padding:13px 28px;border-radius:50px;font-weight:700;font-size:1rem;cursor:pointer;font-family:inherit;box-shadow:0 8px 22px rgba(255,59,92,.35);transition:.25s}
+.btn:hover{transform:translateY(-2px)}
+.btn.alt{background:linear-gradient(135deg,var(--violet),#b49bff);box-shadow:0 8px 22px rgba(139,92,255,.35)}
+.btn.cy{background:linear-gradient(135deg,#0ea5c6,var(--cyan));color:#001;box-shadow:0 8px 22px rgba(34,211,238,.3)}
+.mini{margin-top:18px;color:var(--muted);font-size:.85rem}
+.stage{perspective:1100px;height:440px;display:flex;align-items:center;justify-content:center}
+.deck{position:relative;width:340px;height:380px;transform-style:preserve-3d;transform:rotateY(-18deg) rotateX(8deg);transition:transform .15s ease-out}
+.fl{position:absolute;inset:0;transform-style:preserve-3d;animation:bob 5s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-14px)}}
+.c3{position:absolute;border-radius:20px;border:1px solid rgba(255,255,255,.2);background:var(--card);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:0 30px 60px rgba(0,0,0,.5);padding:14px 16px}
+.c3 small{display:block;color:var(--amber);font-weight:700;letter-spacing:1px;font-size:.7rem;margin-bottom:8px}
+.ring{position:absolute;left:20px;top:30px;width:300px;height:300px;border-radius:50%;border:2px dashed rgba(139,92,255,.55);transform:translateZ(-80px);animation:ringspin 22s linear infinite}
+@keyframes ringspin{from{transform:translateZ(-80px) rotate(0)}to{transform:translateZ(-80px) rotate(360deg)}}
+.vid{left:10px;top:60px;width:300px;height:176px;padding:0;overflow:hidden;background:linear-gradient(135deg,#2b1a78,#ff3b5c 85%);transform:translateZ(0)}
+.vid b{position:absolute;inset:0;margin:auto;width:66px;height:66px;border-radius:50%;background:#fff;color:var(--red);display:flex;align-items:center;justify-content:center;font-size:1.6rem;box-shadow:0 0 40px rgba(255,255,255,.6)}
+.vid span{position:absolute;left:14px;right:14px;bottom:12px;height:5px;border-radius:5px;background:rgba(255,255,255,.3)}
+.vid span::after{content:'';position:absolute;left:0;top:0;height:100%;width:42%;border-radius:5px;background:#fff}
+.tagc{right:-24px;top:0;width:190px;transform:translateZ(70px)}
+.hashc{left:-30px;bottom:34px;width:200px;transform:translateZ(110px)}
+.ttsc{right:-24px;bottom:6px;width:180px;transform:translateZ(50px)}
+.eq{display:flex;gap:4px;align-items:flex-end;height:36px}
+.eq i{width:7px;border-radius:4px;background:linear-gradient(var(--cyan),var(--violet));animation:eq 1s ease-in-out infinite alternate}
+.eq i:nth-child(2){animation-delay:.15s}.eq i:nth-child(3){animation-delay:.3s}.eq i:nth-child(4){animation-delay:.45s}.eq i:nth-child(5){animation-delay:.6s}.eq i:nth-child(6){animation-delay:.2s}.eq i:nth-child(7){animation-delay:.5s}
+@keyframes eq{from{height:6px}to{height:34px}}
+section{padding:80px 5%}
+section h2{text-align:center;font-size:clamp(1.6rem,4vw,2.6rem);margin-bottom:10px}
+section h2 em{font-style:normal;color:var(--amber)}
+.lead{text-align:center;color:var(--muted);margin-bottom:40px}
+#results{display:none}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:22px;max-width:1150px;margin:0 auto}
+.panel{background:var(--card);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:22px}
+.panel.wide{grid-column:1/-1}
+.panel h3{margin-bottom:12px;color:var(--amber)}
+.panel img{width:100%;border-radius:12px;margin-bottom:12px}
+.box{background:var(--bg2);border-radius:12px;padding:14px;white-space:pre-wrap;word-break:break-word;max-height:260px;overflow:auto}
+.empty{color:var(--muted);font-style:italic}
+.chips{display:flex;flex-wrap:wrap;gap:7px}
+.chip{background:rgba(139,92,255,.25);border:1px solid var(--violet);padding:4px 11px;border-radius:30px;font-size:.82rem;cursor:pointer}
+.chip.r{background:rgba(255,59,92,.2);border-color:var(--red)}
+.tools{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:24px;max-width:1150px;margin:0 auto}
+.tool{background:var(--card);border:1px solid rgba(255,255,255,.1);border-radius:22px;padding:30px 22px;opacity:0;transform:perspective(900px) rotateX(38deg) translateY(60px);transition:opacity .8s,transform .8s cubic-bezier(.2,.8,.2,1)}
+.tool.show{opacity:1;transform:perspective(900px) rotateX(0) translateY(0)}
+.tool .ic{font-size:2.4rem;margin-bottom:10px}
+.tool p{color:var(--muted)}
+.tool.soon.show{opacity:.6}
+.tag{display:inline-block;margin-top:10px;font-size:.75rem;padding:3px 10px;border-radius:20px;background:rgba(255,179,64,.2);color:var(--amber)}
+.tts{max-width:800px;margin:0 auto;background:var(--card);border-radius:24px;padding:28px;border:1px solid rgba(255,255,255,.1);box-shadow:0 30px 80px rgba(0,0,0,.4)}
+.tts textarea{width:100%;min-height:160px;background:var(--bg2);color:var(--text);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:14px;font-size:1.05rem;font-family:inherit;margin-bottom:14px}
+.row{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-bottom:14px}
+.row select,.row input[type=range]{background:var(--bg2);color:var(--text);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:10px;flex:1;min-width:130px}
+.row label{font-size:.85rem;color:var(--muted)}
+.btns{display:flex;flex-wrap:wrap;gap:10px}
+.note{font-size:.8rem;color:var(--muted);margin-top:12px}
+footer{text-align:center;padding:34px 5%;color:var(--muted);border-top:1px solid rgba(255,255,255,.07)}
+.toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(120px);background:var(--red);color:#fff;padding:12px 24px;border-radius:40px;transition:.4s;z-index:200;max-width:90%;text-align:center}
+.toast.on{transform:translateX(-50%) translateY(0)}
+@media(max-width:850px){.hero{grid-template-columns:1fr;text-align:center;padding-top:100px}.hero-text{display:flex;flex-direction:column;align-items:center}.stage{height:360px;transform:scale(.82);margin:-10px 0 0}nav ul{display:none}}
+</style>
+</head>
+<body>
+<canvas id='bg'></canvas>
+<div class='aurora'><i></i><i></i><i></i></div>
+
+<nav>
+<div class='logo'><span class='play'>&#9654;</span><b>YT Toolkit</b></div>
+<ul><li><a href='#home'>Home</a></li><li><a href='#tools'>Tools</a></li><li><a href='#tts'>Text to Speech</a></li></ul>
+</nav>
+
+<header class='hero' id='home'>
+<div class='hero-text'>
+<div class='badge'>100% Free - No Signup - Unlimited</div>
+<h1>Steal The Idea. <em>Beat The Video.</em></h1>
+<p class='sub'>Paste any YouTube link and see its real title, description, tags, hashtags and HD thumbnail in one second.</p>
+<div class='searchbar'>
+<input id='url' type='text' placeholder='Paste any YouTube video URL...'>
+<button class='btn' id='goBtn'>Go &#10140;</button>
+</div>
+<p class='mini'>Thumbnail - Title - Description - Tags - Hashtags</p>
+</div>
+<div class='stage'><div class='deck' id='deck'><div class='fl'>
+<div class='ring'></div>
+<div class='c3 vid'><b>&#9654;</b><span></span></div>
+<div class='c3 tagc'><small>TAGS</small><div class='chips'><span class='chip'>viral</span><span class='chip'>story</span><span class='chip'>shorts</span></div></div>
+<div class='c3 hashc'><small>HASHTAGS</small><div class='chips'><span class='chip r'>#fyp</span><span class='chip r'>#rescue</span></div></div>
+<div class='c3 ttsc'><small>VOICE</small><div class='eq'><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+</div></div></div>
+</header>
+
+<section id='results'>
+<h2>Video <em>Details</em></h2>
+<p class='lead'>Tap any tag or hashtag to copy it.</p>
+<div class='grid'>
+<div class='panel'><h3>Thumbnail</h3><img id='thumb' alt='thumbnail'><button class='btn alt' id='dlBtn'>Download HD Thumbnail</button><p class='empty' id='chan' style='margin-top:10px'></p></div>
+<div class='panel'><h3>Title</h3><div class='box' id='title'></div><button class='btn' style='margin-top:12px' data-copy='title'>Copy Title</button></div>
+<div class='panel wide'><h3>Description</h3><div class='box' id='desc'></div><button class='btn' style='margin-top:12px' data-copy='desc'>Copy Description</button></div>
+<div class='panel'><h3>Tags Used</h3><div class='chips' id='tags'></div><button class='btn alt' style='margin-top:14px' data-all='tags'>Copy All Tags</button></div>
+<div class='panel'><h3>Hashtags Used</h3><div class='chips' id='hashes'></div><button class='btn' style='margin-top:14px' data-all='hashes'>Copy All Hashtags</button></div>
+</div>
+</section>
+
+<section id='tools'>
+<h2>All <em>Tools</em></h2>
+<p class='lead'>Everything a creator needs, in one place.</p>
+<div class='tools'>
+<div class='tool'><div class='ic'>&#128444;</div><h3>Thumbnail Downloader</h3><p>Grab any video thumbnail in HD.</p><span class='tag'>Live</span></div>
+<div class='tool'><div class='ic'>&#128221;</div><h3>Title and Description</h3><p>See exactly what top videos use.</p><span class='tag'>Live</span></div>
+<div class='tool'><div class='ic'>&#127991;</div><h3>Tags and Hashtags</h3><p>Reveal the real tags behind any video.</p><span class='tag'>Live</span></div>
+<div class='tool'><div class='ic'>&#127908;</div><h3>Urdu Hindi English TTS</h3><p>Unlimited text to speech with download.</p><span class='tag'>Live</span></div>
+<div class='tool soon'><div class='ic'>&#128220;</div><h3>YouTube to Transcript</h3><p>Full text of any video.</p><span class='tag'>Coming soon</span></div>
+<div class='tool soon'><div class='ic'>&#127912;</div><h3>AI Image Creator</h3><p>Images from a simple prompt.</p><span class='tag'>Coming soon</span></div>
+<div class='tool soon'><div class='ic'>&#127916;</div><h3>AI Video Generator</h3><p>Ideas into short videos.</p><span class='tag'>Coming soon</span></div>
+</div>
+</section>
+
+<section id='tts'>
+<h2>Urdu Hindi English <em>Text to Speech</em></h2>
+<p class='lead'>No limits on words, characters or credits.</p>
+<div class='tts'>
+<textarea id='ttsText' placeholder='Type your text here...'></textarea>
+<div class='row'><select id='lang'><option value='ur'>Urdu</option><option value='hi'>Hindi</option><option value='en'>English</option></select></div>
+<div class='row'><label>Speed</label><input type='range' id='rate' min='0.5' max='2' step='0.1' value='1'></div>
+<div class='btns'>
+<button class='btn' id='playBtn'>Play</button>
+<button class='btn alt' id='stopBtn'>Stop</button>
+<button class='btn cy' id='dlAudioBtn'>Download MP3</button>
+</div>
+<p class='note'>Download uses a free online voice and joins long text automatically. Play uses your device voices.</p>
+</div>
+</section>
+
+<footer>2026 YT Toolkit - Made for creators</footer>
+<div class='toast' id='toast'></div>
+
+<script>
+// YOUTUBE API KEY (already added)
+var API_KEY = 'AIzaSyDYdpzispBES-8RnbBL_t-uOvbrqJcF5SE';
+
+var vid = '';
+function $(id){ return document.getElementById(id); }
+function toast(m){ var t=$('toast'); t.textContent=m; t.classList.add('on'); setTimeout(function(){ t.classList.remove('on'); }, 2500); }
+function getId(u){ var m=u.match(/(?:v=|youtu\.be\/|shorts\/|embed\/|live\/)([A-Za-z0-9_-]{11})/); return m ? m[1] : null; }
+function copyText(t){
+  var a=document.createElement('textarea'); a.value=t; document.body.appendChild(a); a.select();
+  try{ document.execCommand('copy'); toast('Copied'); }catch(e){ toast('Copy failed'); }
+  document.body.removeChild(a);
+}
+function setBox(id,t){ var e=$(id); if(t && t.trim()){ e.textContent=t; e.className='box'; } else { e.textContent='Not used in this video'; e.className='box empty'; } }
+function fillChips(id,arr,cls){
+  var c=$(id); c.innerHTML='';
+  if(!arr.length){ c.innerHTML='<span class="empty">Not used in this video</span>'; return; }
+  arr.forEach(function(x){ var s=document.createElement('span'); s.className=cls; s.textContent=x; s.onclick=function(){ copyText(x); }; c.appendChild(s); });
+}
+
+function go(){
+  var id=getId($('url').value.trim());
+  if(!id){ toast('Please enter a valid YouTube link'); return; }
+  vid=id;
+  fetch('https://www.googleapis.com/youtube/v3/videos?part=snippet&id='+id+'&key='+API_KEY)
+  .then(function(r){ return r.json(); })
+  .then(function(d){
+    if(d.error){ toast('API error: '+d.error.message); return; }
+    if(!d.items || !d.items.length){ toast('Video not found'); return; }
+    var s=d.items[0].snippet, th=s.thumbnails||{};
+    $('thumb').src=(th.maxres||th.standard||th.high||th.medium||th.default).url;
+    $('chan').textContent='Channel: '+s.channelTitle;
+    setBox('title',s.title);
+    setBox('desc',s.description);
+    fillChips('tags',s.tags||[],'chip');
+    var found=[], seen={};
+    var m=(s.title+' '+s.description).match(/#[^\s#.,!?;:()\[\]{}"']+/g)||[];
+    m.forEach(function(h){ if(!seen[h]){ seen[h]=1; found.push(h); } });
+    fillChips('hashes',found,'chip r');
+    $('results').style.display='block';
+    $('results').scrollIntoView({behavior:'smooth'});
+  })
+  .catch(function(){ toast('Network error, try again'); });
+}
+
+function downloadThumb(){
+  if(!vid) return;
+  var names=['maxresdefault','sddefault','hqdefault'], i=0;
+  function tryNext(){
+    if(i>=names.length){ window.open('https://img.youtube.com/vi/'+vid+'/hqdefault.jpg','_blank'); return; }
+    fetch('https://img.youtube.com/vi/'+vid+'/'+names[i++]+'.jpg').then(function(r){ if(!r.ok) throw 0; return r.blob(); }).then(function(b){
+      if(b.size<5000) throw 0;
+      var a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download='thumbnail-'+vid+'.jpg'; a.click();
+    }).catch(tryNext);
+  }
+  tryNext();
+}
+
+$('goBtn').onclick=go;
+$('url').addEventListener('keydown',function(e){ if(e.key==='Enter') go(); });
+$('dlBtn').onclick=downloadThumb;
+document.querySelectorAll('[data-copy]').forEach(function(b){ b.onclick=function(){ var e=$(b.getAttribute('data-copy')); if(e.className.indexOf('empty')>-1) return toast('Nothing to copy'); copyText(e.textContent); }; });
+document.querySelectorAll('[data-all]').forEach(function(b){ b.onclick=function(){ var id=b.getAttribute('data-all'); var a=[].map.call($(id).querySelectorAll('.chip'),function(e){ return e.textContent; }); if(!a.length) return toast('Nothing to copy'); copyText(id==='tags'?a.join(', '):a.join(' ')); }; });
+
+// Hero 3D deck follows mouse, touch and scroll
+(function(){
+  var d=$('deck');
+  function tilt(x,y){ d.style.transform='rotateY('+(-18+x*40)+'deg) rotateX('+(8-y*30)+'deg)'; }
+  window.addEventListener('mousemove',function(e){ tilt(e.clientX/window.innerWidth-.5,e.clientY/window.innerHeight-.5); });
+  window.addEventListener('touchmove',function(e){ var t=e.touches[0]; tilt(t.clientX/window.innerWidth-.5,t.clientY/window.innerHeight-.5); },{passive:true});
+  window.addEventListener('scroll',function(){ var s=Math.min(window.scrollY/500,1); d.style.transform='rotateY('+(-18+s*40)+'deg) rotateX('+(8+s*16)+'deg)'; });
+})();
+
+// Scroll reveal for tool cards
+var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting) e.target.classList.add('show'); }); },{threshold:.15});
+document.querySelectorAll('.tool').forEach(function(el,i){ el.style.transitionDelay=(i%4)*0.1+'s'; io.observe(el); });
+
+// Particle background with depth
+(function(){
+  var cv=$('bg'), cx=cv.getContext('2d'), W, H, pts=[], mx=0, my=0, cols=['#8b5cff','#ff3b5c','#22d3ee','#ffb340'];
+  function size(){ W=cv.width=window.innerWidth; H=cv.height=window.innerHeight; }
+  size(); window.addEventListener('resize',size);
+  for(var i=0;i<120;i++) pts.push({x:Math.random()*2-1,y:Math.random()*2-1,z:Math.random()*2+.2,c:cols[i%4]});
+  window.addEventListener('mousemove',function(e){ mx=e.clientX/W-.5; my=e.clientY/H-.5; });
+  function draw(){
+    cx.clearRect(0,0,W,H); var sc=window.scrollY/1500;
+    pts.forEach(function(p){
+      p.z-=.0035; if(p.z<.2) p.z=2.2;
+      var k=1/p.z, x=W/2+(p.x+mx*.5)*W*.5*k, y=H/2+(p.y+my*.5-sc*.3)*H*.5*k;
+      cx.beginPath(); cx.fillStyle=p.c; cx.globalAlpha=Math.min(1,k*.5); cx.arc(x,y,Math.max(.5,k*2.4),0,7); cx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// Text to speech
+function speak(){
+  var t=$('ttsText').value.trim(); if(!t) return toast('Please type some text');
+  window.speechSynthesis.cancel();
+  var l=$('lang').value, code=(l==='ur')?'ur-PK':(l==='hi')?'hi-IN':'en-US';
+  var voices=window.speechSynthesis.getVoices();
+  var v=voices.filter(function(x){ return x.lang.toLowerCase().indexOf(l)===0; })[0];
+  if(!v && l==='ur') v=voices.filter(function(x){ return /^(hi|ur|pa)/i.test(x.lang); })[0];
+  var parts=t.match(/[^.!?\u06d4\n]+[.!?\u06d4\n]*/g)||[t];
+  parts.forEach(function(p){
+    if(!p.trim()) return;
+    var u=new SpeechSynthesisUtterance(p); u.lang=code; if(v) u.voice=v; u.rate=parseFloat($('rate')
